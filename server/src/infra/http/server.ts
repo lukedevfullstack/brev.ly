@@ -1,9 +1,9 @@
+import { errorHandler } from "@/shared/error-handler";
 import { fastifyCors } from "@fastify/cors";
 import { fastify } from "fastify";
 import {
-    hasZodFastifySchemaValidationErrors,
-    serializerCompiler,
-    validatorCompiler,
+  serializerCompiler,
+  validatorCompiler,
 } from "fastify-type-provider-zod";
 
 const server = fastify();
@@ -11,15 +11,7 @@ const server = fastify();
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
 
-server.setErrorHandler((error, request, reply) => {
-  if (hasZodFastifySchemaValidationErrors(error)) {
-    return reply.status(400).send({
-      message: "Validation error",
-      issues: error.validation,
-    });
-  }
-  return reply.status(500).send({ message: "Internal server error." });
-});
+server.setErrorHandler((error, _, reply) => errorHandler(reply, error));
 
 server.register(fastifyCors, { origin: "*" });
 
