@@ -18,14 +18,17 @@
     "@fastify/swagger": "^9.4.1",
     "@fastify/swagger-ui": "^5.2.1",
     "brevly-server": "file:",
+    "drizzle-orm": "^0.38.4",
     "fastify": "^5.2.2",
     "fastify-type-provider-zod": "^4.0.2",
+    "postgres": "^3.4.5",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.14.0",
     "dotenv-cli": "^8.0.0",
+    "drizzle-kit": "^0.30.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "vite-tsconfig-paths": "^5.1.4",
