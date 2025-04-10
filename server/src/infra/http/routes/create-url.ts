@@ -15,7 +15,7 @@ export const createUrlRoute: FastifyPluginAsyncZod = async (server) => {
           shortUrl: z
             .string()
             .min(4)
-            .max(12)
+            .max(15)
             .transform((val) => val.toLowerCase()),
         }),
         response: {

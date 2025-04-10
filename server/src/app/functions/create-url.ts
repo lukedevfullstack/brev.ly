@@ -15,7 +15,7 @@ const createUrlInput = z.object({
   shortUrl: z
     .string()
     .min(4)
-    .max(12)
+    .max(15)
     .transform((val) => val.toLowerCase()),
 });
 
