@@ -1,8 +1,13 @@
 import { db } from "@/infra/db";
 import { urls } from "@/infra/db/schemas/urls";
 import { tryCatch } from "@/shared/try-catch";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { AlreadyExistsError } from "../errors/already-exists-error";
 import { InvalidFormatError } from "../errors/invalid-format-error";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
+import { UnexpectedError } from "../errors/unexpected-error";
+import { getUrl } from "./get-url";
 import { validateShortUrl } from "./validate-short-url";
 
 const createUrlInput = z.object({
@@ -22,6 +27,16 @@ export const createUrl = async (input: CreateUrlInput) => {
 
   if (validationError) {
     throw new InvalidFormatError(validationError);
+  }
+
+  const [match, error] = await getUrl([eq(urls.shortUrl, shortUrl)]);
+  
+  if (!(error instanceof ResourceNotFoundError)) {
+    throw new UnexpectedError()
+  }
+
+  if (match) {
+    throw new AlreadyExistsError("Url");
   }
 
   return await tryCatch(() =>

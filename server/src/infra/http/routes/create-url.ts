@@ -31,13 +31,6 @@ export const createUrlRoute: FastifyPluginAsyncZod = async (server) => {
               })
             )
             .describe("Short URLs created"),
-          400: z
-            .object({ message: z.string() })
-            .describe("Invalid format error"),
-          409: z
-            .object({ message: z.string() })
-            .describe("Already exists error"),
-          500: z.object({ message: z.string() }).describe("Unexpected error"),
         },
       },
     },
