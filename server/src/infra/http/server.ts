@@ -8,6 +8,7 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
+import { createUrlRoute } from "./routes/create-url";
 
 const server = fastify();
 
@@ -31,6 +32,8 @@ server.register(fastifySwagger, {
 server.register(fastifySwaggerUi, {
   routePrefix: "/docs",
 });
+
+server.register(createUrlRoute);
 
 server.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
   console.log("HTTP Server running!");
