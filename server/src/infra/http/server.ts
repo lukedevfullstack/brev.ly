@@ -9,6 +9,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { createUrlRoute } from "./routes/create-url";
+import { deleteUrlRoute } from "./routes/delete-url";
 import { getUrlsRoute } from "./routes/get-urls";
 
 const server = fastify();
@@ -36,6 +37,7 @@ server.register(fastifySwaggerUi, {
 
 server.register(createUrlRoute);
 server.register(getUrlsRoute);
+server.register(deleteUrlRoute);
 
 server.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
   console.log("HTTP Server running!");
