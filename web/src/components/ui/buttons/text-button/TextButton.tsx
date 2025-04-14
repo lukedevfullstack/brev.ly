@@ -32,7 +32,7 @@ export const TextButton = ({
   return (
     <button
       className={twMerge(
-        "rounded-base flex h-12 w-[19.75rem] items-center justify-center gap-[0.375rem] transition-all duration-150 enabled:cursor-pointer disabled:opacity-50",
+        "rounded-base flex h-8 w-[6.25rem] items-center text-nowrap justify-center gap-[0.375rem] p-2 transition-all duration-150 enabled:cursor-pointer disabled:opacity-50",
         variantStyle[variant],
         sizeStyle[size],
         className,

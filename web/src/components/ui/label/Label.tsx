@@ -32,7 +32,7 @@ export const Label = ({
       {label}
       {children}
       {hasError && (
-        <span className="flex gap-2 text-sm text-gray-500 normal-case">
+        <span className="flex gap-2 text-sm text-[var(--gray-400)] normal-case">
           <Icons.Warning className="size-4 text-[var(--danger)]" />
           {error}
         </span>
