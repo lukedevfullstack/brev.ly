@@ -10,6 +10,7 @@ import {
 } from "fastify-type-provider-zod";
 import { createUrlRoute } from "./routes/create-url";
 import { deleteUrlRoute } from "./routes/delete-url";
+import { exportUrlsRoute } from "./routes/export-urls";
 import { getUrlsRoute } from "./routes/get-urls";
 import { visitUrlRoute } from "./routes/visit-url";
 
@@ -40,6 +41,7 @@ server.register(createUrlRoute);
 server.register(getUrlsRoute);
 server.register(deleteUrlRoute);
 server.register(visitUrlRoute);
+server.register(exportUrlsRoute);
 
 server.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
   console.log("HTTP Server running!");
