@@ -7,7 +7,7 @@ export const getUrlsRoute: FastifyPluginAsyncZod = async (server) => {
     "/urls",
     {
       schema: {
-        summary: "Get shortened Urls",
+        summary: "Get shortened URLs",
         tags: ["Urls"],
         querystring: z.object({
           page: z.coerce.number().optional().default(1),
