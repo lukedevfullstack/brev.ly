@@ -1,11 +1,12 @@
-import { Icons } from "@/icons/Icons";
+import { MyLinks } from "@/components/my-links/MyLinks";
+import { NewLink } from "@/components/new-link/NewLink";
 
 export const Home = () => {
   return (
     <main className="page items-center justify-center">
-      <div className="flex w-fit flex-col items-start gap-8">
-        <Icons.Logo className="text-[var(--blue-dark)]" />
-        <div className="flex items-start justify-center gap-[1.25rem]"></div>
+      <div className="3xl:grid 3xl:grid-cols-10 3xl:gap-[1.25rem] 3xl:w-full 3xl:px-[15%] relative flex flex-col items-start justify-center gap-3">
+        <NewLink />
+        <MyLinks />
       </div>
     </main>
   );
