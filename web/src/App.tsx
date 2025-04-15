@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { RootLayout } from "./layout/RootLayout";
+import { redirectLoader } from "./loaders/redirect-loader";
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { Redirect } from "./pages/Redirect";
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
       },
       {
         path: ":url",
+        loader: redirectLoader,
         element: <Redirect />,
         errorElement: <NotFound />,
       },
