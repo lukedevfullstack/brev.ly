@@ -33,6 +33,7 @@
   --text-xs: 0.625rem;
   --text-xs--line-height: 0.875rem;
   --text-xs--font-weight: 400;
+  --breakpoint-3xl: 85.375rem;
 }
 
 @layer components {
