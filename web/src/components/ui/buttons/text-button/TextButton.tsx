@@ -13,7 +13,7 @@ const variantStyle: Record<ComponentVariants, string> = {
   primary:
     "bg-[var(--blue-base)] text-white enabled:hover:bg-[var(--blue-dark)]",
   secondary:
-    "bg-[var(--gray-200)] text-gray-500 enabled:hover:bg-[var(--gray-300)]",
+    "bg-[var(--gray-200)] text-[var(--gray-500)] enabled:hover:bg-[var(--gray-300)]",
 };
 
 const sizeStyle: Record<ComponentSizes, string> = {
