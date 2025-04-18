@@ -17,9 +17,9 @@ const variantStyle: Record<ComponentVariants, string> = {
 };
 
 const sizeStyle: Record<ComponentSizes, string> = {
-  small: "text-sm",
-  medium: "text-md",
-  large: "text-lg",
+  small: "text-sm h-8 w-24",
+  medium: "text-md h-12 w-[19.75rem]",
+  large: "text-lg h-14 w-[22.5rem]",
 };
 
 export const Button = ({
@@ -32,7 +32,7 @@ export const Button = ({
   return (
     <button
       className={twMerge(
-        "rounded-base flex h-12 w-[19.75rem] items-center justify-center gap-[0.375rem] transition-all duration-150 enabled:cursor-pointer disabled:opacity-50",
+        "rounded-base flex items-center justify-center gap-[0.375rem] transition-all duration-150 enabled:cursor-pointer disabled:opacity-50",
         variantStyle[variant],
         sizeStyle[size],
         className,
