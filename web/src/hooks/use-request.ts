@@ -5,8 +5,9 @@ interface RequestOptions<TBody, TParams, TData, TError> {
   body?: TBody;
   params?: TParams;
   headers?: Record<string, string>;
-  onSuccess?: (data: TData) => void;
-  onError?: (error: TError) => void;
+  mode?: RequestMode;
+  onSuccess?: (data: TData, response: Response) => void;
+  onError?: (error: TError, response?: Response) => void;
 }
 
 interface UseRequestReturn<TData, TError, TBody, TParams> {
@@ -36,9 +37,11 @@ export const useRequest = <
       setData(null);
       setError(null);
       setLoading(true);
+
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
+
       const abortController = new AbortController();
       abortControllerRef.current = abortController;
 
@@ -49,35 +52,48 @@ export const useRequest = <
           ...(options?.headers || {}),
         },
         signal: abortController.signal,
+        mode: options?.mode,
       };
+
       if (options?.body) {
         fetchOptions.body = JSON.stringify(options.body);
       }
+
       fetch(
-        url +
-          "?" +
-          new URLSearchParams(options?.params ? options.params : {}).toString(),
+        url + "?" + new URLSearchParams(options?.params ?? {}).toString(),
         fetchOptions,
       )
-        .then((response) => {
+        .then(async (response) => {
           if (!response.ok) {
-            return response.json().then((errorData) => {
-              throw errorData;
-            });
+            const errorData = await response.json().catch(() => null);
+            const typedError = errorData as TError;
+            throw { error: typedError, response };
           }
-          return response.json();
-        })
-        .then((responseData: TData) => {
+
+          const contentType = response.headers.get("content-type");
+          const isJson = contentType?.includes("application/json");
+
+          const responseData: TData = isJson
+            ? await response.json()
+            : (undefined as TData);
+
           setData(responseData);
-          options?.onSuccess?.(responseData);
+          options?.onSuccess?.(responseData, response);
         })
-        .catch((err: TError) => {
+        .catch((err) => {
           if (abortController.signal.aborted) {
             console.log("Request aborted");
-          } else {
-            setError(err);
-            options?.onError?.(err);
+            return;
           }
+
+          const extractedError = (
+            err && "error" in err ? err.error : err
+          ) as TError;
+          const response =
+            err && "response" in err ? (err.response as Response) : undefined;
+
+          setError(extractedError);
+          options?.onError?.(extractedError, response);
         })
         .finally(() => {
           setLoading(false);
@@ -87,16 +103,12 @@ export const useRequest = <
   );
 
   const abortRequest = useCallback(() => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
+    abortControllerRef.current?.abort();
   }, []);
 
   useEffect(() => {
     return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
+      abortControllerRef.current?.abort();
     };
   }, []);
 
