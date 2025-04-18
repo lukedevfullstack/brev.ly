@@ -22,7 +22,9 @@ export const visitUrlRoute: FastifyPluginAsyncZod = async (server) => {
             .transform((val) => val.toLowerCase()),
         }),
         response: {
-          302: z.any(),
+          200: z.object({
+            originalUrl: z.string().url(),
+          }),
         },
       },
     },
@@ -49,7 +51,7 @@ export const visitUrlRoute: FastifyPluginAsyncZod = async (server) => {
         throw new UnexpectedError();
       }
 
-      return reply.redirect(urlData.originalUrl);
+      return reply.send({ originalUrl: urlData.originalUrl });
     }
   );
 };

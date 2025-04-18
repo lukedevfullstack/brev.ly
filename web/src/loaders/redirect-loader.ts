@@ -6,12 +6,12 @@ export const redirectLoader = async ({ params }: LoaderFunctionArgs) => {
   if (!url) {
     throw new Error("URL parameter is missing");
   }
-  
-  const res = await fetch(`/api/urls/${url}`);
 
-  if (!res) {
-    throw new Error("Failed to fetch the URL data");
-  }
+  const res = await fetch(`/api/visit/${url}`);
 
-  return res.json();
+  if (!res.ok) throw new Error("URL not found");
+
+  const data = await res.json();
+
+  return Response.redirect(data.originalUrl, 302);
 };
