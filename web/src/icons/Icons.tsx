@@ -21,41 +21,51 @@ export const Icons = {
       <path d="M27 4H11C10.7348 4 10.4804 4.10536 10.2929 4.29289C10.1054 4.48043 10 4.73478 10 5V10H5C4.73478 10 4.48043 10.1054 4.29289 10.2929C4.10536 10.4804 4 10.7348 4 11V27C4 27.2652 4.10536 27.5196 4.29289 27.7071C4.48043 27.8946 4.73478 28 5 28H21C21.2652 28 21.5196 27.8946 21.7071 27.7071C21.8946 27.5196 22 27.2652 22 27V22H27C27.2652 22 27.5196 21.8946 27.7071 21.7071C27.8946 21.5196 28 21.2652 28 21V5C28 4.73478 27.8946 4.48043 27.7071 4.29289C27.5196 4.10536 27.2652 4 27 4ZM20 26H6V12H20V26ZM26 20H22V11C22 10.7348 21.8946 10.4804 21.7071 10.2929C21.5196 10.1054 21.2652 10 21 10H12V6H26V20Z" />
     </svg>
   ),
-  DialogError: ({ className, ...props }: Icon) => (
+  Close: ({ className, ...props }: Icon) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      className={twMerge("size-6 fill-current", className)}
+      {...props}
+    >
+      <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z" />
+    </svg>
+  ),
+  NotificationError: ({ className, ...props }: Icon) => (
     <svg
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className={twMerge("h-6 w-6 fill-current", className)}
+      className={twMerge("size-6 fill-current", className)}
       {...props}
     >
       <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.58 20 4 16.42 4 12C4 10.15 4.63 8.45 5.69 7.1L16.9 18.31C15.55 19.37 13.85 20 12 20ZM18.31 16.9L7.1 5.69C8.45 4.63 10.15 4 12 4C16.42 4 20 7.58 20 12C20 13.85 19.37 15.55 18.31 16.9Z" />
     </svg>
   ),
-  DialogInfo: ({ className, ...props }: Icon) => (
+  NotificationInfo: ({ className, ...props }: Icon) => (
     <svg
       viewBox="0 0 24 24"
-      className={twMerge("h-6 w-6 fill-current", className)}
+      className={twMerge("size-6 fill-current", className)}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path d="M11 7H13V9H11V7ZM11 11H13V17H11V11ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" />
     </svg>
   ),
-  DialogSuccess: ({ className, ...props }: Icon) => (
+  NotificationSuccess: ({ className, ...props }: Icon) => (
     <svg
       viewBox="0 0 24 24"
-      className={twMerge("fill-logo-current h-6 w-6", className)}
+      className={twMerge("size-6 fill-current", className)}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path d="M8.79508 15.8749L4.62508 11.7049L3.20508 13.1149L8.79508 18.7049L20.7951 6.70492L19.3851 5.29492L8.79508 15.8749Z" />
     </svg>
   ),
-  DialogWarning: ({ className, ...props }: Icon) => (
+  NotificationWarning: ({ className, ...props }: Icon) => (
     <svg
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      className={twMerge("h-6 w-6 fill-current", className)}
+      className={twMerge("size-6 fill-current", className)}
       {...props}
     >
       <path d="M12 6.49L19.53 19.5H4.47L12 6.49ZM12 2.5L1 21.5H23L12 2.5ZM13 16.5H11V18.5H13V16.5ZM13 10.5H11V14.5H13V10.5Z" />

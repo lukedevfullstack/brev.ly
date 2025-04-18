@@ -11,10 +11,10 @@ import { DialogTimer } from "./dialog-timer/DialogTimer";
 type DialogVariant = "success" | "error" | "warning" | "info";
 
 const variantIcon: Record<DialogVariant, React.ReactNode> = {
-  success: <Icons.DialogSuccess />,
-  error: <Icons.DialogError />,
-  warning: <Icons.DialogWarning />,
-  info: <Icons.DialogInfo />,
+  success: <Icons.NotificationSuccess />,
+  error: <Icons.NotificationError />,
+  warning: <Icons.NotificationWarning />,
+  info: <Icons.NotificationInfo />,
 };
 
 interface Dialog {
