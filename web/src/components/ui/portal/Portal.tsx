@@ -15,11 +15,14 @@ type ScreenPosition =
 interface Portal {
   className?: string;
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
   positionOnScreen?: ScreenPosition;
   backdrop?: boolean;
-};
+  zIndex?: number;
+}
+
+export type PortalOptions = Partial<Portal>;
 
 const childrenPosition: Record<ScreenPosition | string, string> = {
   top: "items-start justify-center",
@@ -40,6 +43,7 @@ export const Portal = ({
   children,
   positionOnScreen = "center",
   backdrop = false,
+  zIndex = 52,
 }: Portal) => {
   return (
     <>
@@ -47,11 +51,12 @@ export const Portal = ({
         createPortal(
           <div
             className={twMerge(
-              "min-w-screen absolute bottom-0 left-0 right-0 top-0 z-[52] flex min-h-screen transition-all duration-150 ease-in bg-black/20",
-              backdrop && "backdrop-blur-sm",
+              "absolute top-0 right-0 bottom-0 left-0 flex h-screen w-screen transition-all duration-150 ease-in",
+              backdrop && "bg-black/20 backdrop-blur-sm",
               childrenPosition[positionOnScreen],
               className,
             )}
+            style={{ zIndex }}
             onClick={onClose}
           >
             {children}

@@ -1,7 +1,7 @@
 import { useTimeout } from "@/hooks/use-timeout";
 import { Icons } from "@/icons/Icons";
 import { useCallback, useEffect, useRef } from "react";
-import { Portal } from "../portal/Portal";
+import { Portal, PortalOptions } from "../portal/Portal";
 import { Action, DialogActions } from "./dialog-actions/DialogActions";
 import { DialogContent } from "./dialog-content/DialogContent";
 import { DialogHeader } from "./dialog-header/DialogHeader";
@@ -33,6 +33,8 @@ interface Dialog {
   Header?: React.ReactNode;
   Content?: React.ReactNode;
   Actions?: React.ReactNode;
+
+  portalOptions?: PortalOptions;
 }
 
 export const Dialog = ({
@@ -48,6 +50,11 @@ export const Dialog = ({
   Content,
   Actions,
   actions,
+
+  portalOptions = {
+    positionOnScreen: "center",
+    backdrop: true,
+  },
 }: Dialog) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
@@ -82,12 +89,7 @@ export const Dialog = ({
   );
 
   return (
-    <Portal
-      isOpen={isOpen}
-      onClose={onClose}
-      positionOnScreen="center"
-      backdrop
-    >
+    <Portal isOpen={isOpen} onClose={onClose} {...portalOptions}>
       <DialogRoot
         ref={dialogRef}
         title={title}
@@ -99,7 +101,11 @@ export const Dialog = ({
         {Header ?? <DialogHeader title={title} Icon={variantIcon[variant]} />}
         {Content ?? <DialogContent description={description} />}
         {selfClosesAfter && (
-          <DialogTimer remaining={remaining ?? 0} total={selfClosesAfter} isPaused={isPaused}/>
+          <DialogTimer
+            remaining={remaining ?? 0}
+            total={selfClosesAfter}
+            isPaused={isPaused}
+          />
         )}
         {Actions ?? <DialogActions Actions={actions} onClose={onClose} />}
       </DialogRoot>
