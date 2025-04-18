@@ -2,11 +2,11 @@ import { useTimeout } from "@/hooks/use-timeout";
 import { Icons } from "@/icons/Icons";
 import { useCallback, useEffect, useRef } from "react";
 import { Portal, PortalOptions } from "../portal/Portal";
+import { ProgressBar } from "../progress-bar/ProgressBar";
 import { Action, DialogActions } from "./dialog-actions/DialogActions";
 import { DialogContent } from "./dialog-content/DialogContent";
 import { DialogHeader } from "./dialog-header/DialogHeader";
 import { DialogRoot } from "./dialog-root/DialogRoot";
-import { DialogTimer } from "./dialog-timer/DialogTimer";
 
 type DialogVariant = "success" | "error" | "warning" | "info";
 
@@ -101,10 +101,11 @@ export const Dialog = ({
         {Header ?? <DialogHeader title={title} Icon={variantIcon[variant]} />}
         {Content ?? <DialogContent description={description} />}
         {selfClosesAfter && (
-          <DialogTimer
+          <ProgressBar
             remaining={remaining ?? 0}
             total={selfClosesAfter}
             isPaused={isPaused}
+            isReverse
           />
         )}
         {Actions ?? <DialogActions Actions={actions} onClose={onClose} />}
