@@ -1,13 +1,13 @@
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface DialogRootProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DialogRoot extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   title: string;
   description: string;
 }
 
-export const DialogRoot = forwardRef<HTMLDivElement, DialogRootProps>(
+export const DialogRoot = forwardRef<HTMLDivElement, DialogRoot>(
   ({ className, title, description, children, ...props }, ref) => {
     return (
       <div

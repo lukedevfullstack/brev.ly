@@ -17,7 +17,7 @@ const variantIcon: Record<DialogVariant, React.ReactNode> = {
   info: <Icons.DialogInfo />,
 };
 
-interface DialogProps {
+interface Dialog {
   isOpen: boolean;
   onClose: () => void;
   variant?: DialogVariant;
@@ -48,7 +48,7 @@ export const Dialog = ({
   Content,
   Actions,
   actions,
-}: DialogProps) => {
+}: Dialog) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
 
