@@ -7,6 +7,7 @@ interface TextButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: ComponentVariants;
   size?: ComponentSizes;
+  active?: boolean;
 }
 
 const variantStyle: Record<ComponentVariants, string> = {
@@ -22,18 +23,25 @@ const sizeStyle: Record<ComponentSizes, string> = {
   large: "text-lg",
 };
 
+const variantActiveStyle: Record<ComponentVariants, string> = {
+  primary: "border-active-primary",
+  secondary: "border-active-secondary",
+};
+
 export const TextButton = ({
   className,
   variant = "primary",
   size = "medium",
   children,
+  active = false,
   ...props
 }: TextButton) => {
   return (
     <button
       className={twMerge(
-        "rounded-base flex h-8 w-[6.25rem] items-center text-nowrap justify-center gap-[0.375rem] p-2 transition-all duration-150 enabled:cursor-pointer disabled:opacity-50",
+        "rounded-base flex h-8 w-[6.25rem] items-center justify-center gap-[0.375rem] border-[2px] border-transparent p-2 text-nowrap transition-all duration-150 enabled:cursor-pointer disabled:opacity-50",
         variantStyle[variant],
+        active && variantActiveStyle[variant],
         sizeStyle[size],
         className,
       )}
