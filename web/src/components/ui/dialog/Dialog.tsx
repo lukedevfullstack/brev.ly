@@ -1,3 +1,4 @@
+import { useTimeout } from "@/hooks/use-timeout";
 import { Icons } from "@/icons/Icons";
 import { useCallback, useEffect, useRef } from "react";
 import { Portal } from "../portal/Portal";
@@ -5,6 +6,7 @@ import { Action, DialogActions } from "./dialog-actions/DialogActions";
 import { DialogContent } from "./dialog-content/DialogContent";
 import { DialogHeader } from "./dialog-header/DialogHeader";
 import { DialogRoot } from "./dialog-root/DialogRoot";
+import { DialogTimer } from "./dialog-timer/DialogTimer";
 
 type DialogVariant = "success" | "error" | "warning" | "info";
 
@@ -22,6 +24,7 @@ interface DialogProps {
   title?: string;
   description?: string;
   className?: string;
+  selfClosesAfter?: number;
 
   /** Action buttons to render in DialogActions */
   actions?: React.ReactNode | Action[];
@@ -39,6 +42,7 @@ export const Dialog = ({
   title = "dialog-title",
   description = "dialog-description",
   className,
+  selfClosesAfter,
 
   Header,
   Content,
@@ -70,6 +74,13 @@ export const Dialog = ({
     lastFocusedElementRef.current?.focus();
   }, [isOpen, handleKeyDown]);
 
+  const { pause, resume, remaining, isPaused } = useTimeout(
+    () => {
+      if (isOpen) onClose();
+    },
+    isOpen && selfClosesAfter ? selfClosesAfter : null,
+  );
+
   return (
     <Portal
       isOpen={isOpen}
@@ -82,9 +93,14 @@ export const Dialog = ({
         title={title}
         description={description}
         className={className}
+        onPointerEnter={() => (selfClosesAfter ? pause() : {})}
+        onPointerLeave={() => (selfClosesAfter ? resume() : {})}
       >
         {Header ?? <DialogHeader title={title} Icon={variantIcon[variant]} />}
         {Content ?? <DialogContent description={description} />}
+        {selfClosesAfter && (
+          <DialogTimer remaining={remaining ?? 0} total={selfClosesAfter} isPaused={isPaused}/>
+        )}
         {Actions ?? <DialogActions Actions={actions} onClose={onClose} />}
       </DialogRoot>
     </Portal>
