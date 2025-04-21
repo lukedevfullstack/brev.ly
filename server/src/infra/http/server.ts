@@ -11,6 +11,7 @@ import {
 import { createUrlRoute } from "./routes/create-url";
 import { deleteUrlRoute } from "./routes/delete-url";
 import { exportUrlsRoute } from "./routes/export-urls";
+import { getUrlByShortRoute } from "./routes/get-url-by-short";
 import { getUrlsRoute } from "./routes/get-urls";
 import { visitUrlRoute } from "./routes/visit-url";
 
@@ -39,6 +40,7 @@ server.register(fastifySwaggerUi, {
 
 server.register(createUrlRoute);
 server.register(getUrlsRoute);
+server.register(getUrlByShortRoute);
 server.register(deleteUrlRoute);
 server.register(visitUrlRoute);
 server.register(exportUrlsRoute);
