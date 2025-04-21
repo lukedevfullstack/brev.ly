@@ -8,6 +8,8 @@ import { LinkCard } from "./link-card/LinkCard";
 interface MyLinks {
   links: Link[];
   loading: boolean;
+  onLinkClick: (shortUrl: string) => void;
+  onLinkDelete: (shortUrl: string) => void;
 }
 
 const NoRegisteredLinks = () => (
@@ -19,7 +21,7 @@ const NoRegisteredLinks = () => (
   </span>
 );
 
-export const MyLinks = ({ links }: MyLinks) => {
+export const MyLinks = ({ links, onLinkClick, onLinkDelete }: MyLinks) => {
   return (
     <div className="3xl:col-span-6 3xl:w-auto 3xl:flex-1 3xl:min-w-[36.25rem] 3xl:gap-6 3xl:h-auto 3xl:p-8 relative flex h-[21.75rem] w-[22.875rem] flex-col items-start gap-[1.25rem] rounded-lg bg-[var(--gray-100)] p-6">
       <span className="flex w-auto flex-1 items-center justify-between self-stretch">
@@ -37,6 +39,8 @@ export const MyLinks = ({ links }: MyLinks) => {
                   originalUrl={link.originalUrl}
                   shortUrl={link.shortUrl}
                   visitCount={link.visitCount}
+                  onLinkClick={() => onLinkClick(link.shortUrl)}
+                  onLinkDelete={() => onLinkDelete(link.shortUrl)}
                 />
               </li>
             ))}
