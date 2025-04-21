@@ -14,11 +14,13 @@ export const validateLongUrl = (input: string): string | null => {
     return "Insira um link válido.";
   }
 
-  if (!url.hostname.includes(".")) {
+  const isLocalhost = url.hostname === "localhost";
+
+  if (!isLocalhost && !url.hostname.includes(".")) {
     return "O link deve conter um domínio válido (ex: '.com').";
   }
 
-  if (url.hostname.endsWith(".")) {
+  if (!isLocalhost && url.hostname.endsWith(".")) {
     return "O domínio não pode terminar com um ponto.";
   }
 
