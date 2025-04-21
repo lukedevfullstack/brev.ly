@@ -6,7 +6,11 @@ import { Icons } from "@/icons/Icons";
 import { getFilenameFromUrl } from "@/utils/get-filename-from-url";
 import { triggerDownloadFromBlob } from "@/utils/trigger-download-from-blob";
 
-export const DownloadCSV = () => {
+interface DownloadCSV {
+  isDisabled?: boolean;
+}
+
+export const DownloadCSV = ({ isDisabled }: DownloadCSV) => {
   const [isErrorDialogToggled, onErrorDialogToggle] = useToggle();
   const getReportUrl = useRequest<{ reportUrl: string }, string>();
   const downloadCSV = useRequest();
@@ -19,7 +23,7 @@ export const DownloadCSV = () => {
         variant="secondary"
         size="small"
         active={isLoading}
-        disabled={isLoading}
+        disabled={isLoading || isDisabled}
         onClick={() =>
           getReportUrl.sendRequest("/api/urls/exports", {
             method: "POST",
