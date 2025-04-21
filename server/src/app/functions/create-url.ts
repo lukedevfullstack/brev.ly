@@ -30,9 +30,9 @@ export const createUrl = async (input: CreateUrlInput) => {
   }
 
   const [match, error] = await getUrl([eq(urls.shortUrl, shortUrl)]);
-  
-  if (!(error instanceof ResourceNotFoundError)) {
-    throw new UnexpectedError()
+ 
+  if (error && !(error instanceof ResourceNotFoundError)) {
+    throw new UnexpectedError();
   }
 
   if (match) {

@@ -20,16 +20,14 @@ export const createUrlRoute: FastifyPluginAsyncZod = async (server) => {
         }),
         response: {
           201: z
-            .array(
-              z.object({
-                id: z.string(),
-                originalUrl: z.string(),
-                shortUrl: z.string(),
-                visitCount: z.number(),
-                createdAt: z.date(),
-                lastVisited: z.date().nullable(),
-              })
-            )
+            .object({
+              id: z.string(),
+              originalUrl: z.string(),
+              shortUrl: z.string(),
+              visitCount: z.number(),
+              createdAt: z.date(),
+              lastVisited: z.date().nullable(),
+            })
             .describe("Short URLs created"),
         },
       },
@@ -45,9 +43,9 @@ export const createUrlRoute: FastifyPluginAsyncZod = async (server) => {
         shortUrl,
       });
 
-      if (err) throw err;
+      if (err || !newUrl) throw err;
 
-      return reply.code(201).send(newUrl);
+      return reply.code(201).send(newUrl[0]);
     }
   );
 };
