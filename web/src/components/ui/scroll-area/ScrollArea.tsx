@@ -21,7 +21,7 @@ export const ScrollArea = ({ className, children }: ScrollArea) => {
   return (
     <Wrapper
       className={twMerge(
-        "3xl:h-[28dvh] flex w-full snap-y snap-mandatory flex-col overflow-y-auto",
+        "flex w-full snap-y snap-mandatory flex-col overflow-y-auto",
         className,
       )}
     >

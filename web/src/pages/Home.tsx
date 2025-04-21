@@ -30,7 +30,7 @@ export const Home = () => {
 
   return (
     <main className="page 3xl:justify-center items-center">
-      <div className="3xl:grid 3xl:grid-cols-10 3xl:gap-[1.25rem] 3xl:w-full 3xl:px-[15%] 3xl:pt-0 relative flex flex-col gap-3 pt-20">
+      <div className="3xl:grid 3xl:grid-cols-10 3xl:gap-[1.25rem] 3xl:w-full 3xl:px-[15%] 3xl:pt-0 relative flex flex-col gap-3 pt-20 3xl:my-[20dvh]">
         <NewLink
           onLinkCreate={(data: { originalUrl: string; shortUrl: string }) => {
             const normalizedUrl = normalizeUrl(data.originalUrl);
