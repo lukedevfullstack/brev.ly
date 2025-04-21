@@ -1,5 +1,6 @@
 import { MyLinks } from "@/components/my-links/MyLinks";
 import { NewLink } from "@/components/new-link/NewLink";
+import { useToast } from "@/components/ui/toast/toast-context/ToastContext";
 import { useOnMount } from "@/hooks/use-on-mount";
 import { useRequest } from "@/hooks/use-request";
 import { Link } from "@/types/link";
@@ -13,6 +14,7 @@ export const Home = () => {
   >();
   const { sendRequest: fetchSingleLink } = useRequest<Link, string>();
   const { sendRequest: deleteLink } = useRequest<null, string>();
+  const { pushToast } = useToast();
 
   useOnMount(() => {
     fetchAllLinks("/api/urls", {
@@ -47,9 +49,24 @@ export const Home = () => {
               method: "DELETE",
               body: {},
               onSuccess: () => {
+                pushToast({
+                  variant: "success",
+                  title: "Sucesso!",
+                  description: `O link "${shortUrl}" foi deletado com sucesso!.`,
+                  className: "text-[var(--blue-base)]",
+                });
                 setLinks((prev) =>
                   prev.filter((link) => link.shortUrl !== shortUrl),
                 );
+              },
+              onError: (err) => {
+                console.warn(err);
+                pushToast({
+                  variant: "error",
+                  title: "Erro",
+                  description: `Erro ao deletar o link. Tente novamente mais tarde.`,
+                  className: "text-red-600",
+                });
               },
             });
           }}

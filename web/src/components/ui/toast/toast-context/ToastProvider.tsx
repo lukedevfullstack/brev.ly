@@ -19,23 +19,16 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
         prev.map((t) => (t.id === id ? { ...t, visible: true } : t)),
       );
     }, 10);
-
-    setTimeout(
-      () => {
-        setToasts((prev) =>
-          prev.map((t) => (t.id === id ? { ...t, visible: false } : t)),
-        );
-      },
-      (options.duration ?? 5000) - 300,
-    );
-
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, options.duration ?? 5000);
   };
 
   const onToastClose = (toastId: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== toastId));
+    setToasts((prev) =>
+      prev.map((t) => (t.id === toastId ? { ...t, visible: false } : t)),
+    );
+
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== toastId));
+    }, 300);
   };
 
   return (
