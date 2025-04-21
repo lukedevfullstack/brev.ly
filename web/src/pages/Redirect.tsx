@@ -1,17 +1,21 @@
+import { useTimeout } from "@/hooks/use-timeout";
 import { Icons } from "@/icons/Icons";
-import { useEffect } from "react";
 import { useLoaderData } from "react-router";
 
 type VisitResponse = { originalUrl: string };
+const redirectTimeout = 500;
 
 export const Redirect = () => {
   const { originalUrl } = useLoaderData() as VisitResponse;
 
-  useEffect(() => {
-    if (originalUrl) {
-      window.location.href = originalUrl;
-    }
-  }, [originalUrl]);
+  useTimeout(
+    () => {
+      if (originalUrl) {
+        window.location.href = originalUrl;
+      }
+    },
+    originalUrl ? redirectTimeout : null,
+  );
 
   return (
     <main className="page items-center justify-center">
@@ -26,7 +30,7 @@ export const Redirect = () => {
             Não foi redirecionado?{" "}
             <a
               className="text-md font-normal text-[var(--blue-base)] underline"
-              href="/"
+              href={originalUrl}
             >
               Acesse aqui
             </a>
