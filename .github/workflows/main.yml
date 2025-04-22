@@ -1,1 +1,56 @@
+name: Brevly CI/CD
 
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - web/**
+      - server/**
+      - .github/workflows/main.yml
+
+jobs:
+  detect_changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      web_changed: ${{ steps.filter.outputs.web }}
+      server_changed: ${{ steps.filter.outputs.server }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Filter Changed Paths
+        id: filter
+        uses: dorny/paths-filter@v3.0.2
+        with:
+          filters: |
+            web:
+              - web/**
+            server:
+              - server/**
+
+  build_backend:
+    name: Build & Deploy Backend
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.server_changed == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        id: configure-aws-credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
