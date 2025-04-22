@@ -1,5 +1,6 @@
 import { errorHandler } from "@/shared/error-handler";
 import { fastifyCors } from "@fastify/cors";
+import rateLimit from "@fastify/rate-limit";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import { fastify } from "fastify";
@@ -23,6 +24,17 @@ server.setSerializerCompiler(serializerCompiler);
 server.setErrorHandler((error, _, reply) => errorHandler(reply, error));
 
 server.register(fastifyCors, { origin: "*" });
+
+server.register(rateLimit, {
+  max: 120,
+  timeWindow: "1 minute",
+  errorResponseBuilder: () => ({
+    statusCode: 429,
+    error: "Too Many Requests",
+    message:
+      "You have exceeded the allowed request limit. Please try again later.",
+  }),
+});
 
 server.register(fastifySwagger, {
   openapi: {
