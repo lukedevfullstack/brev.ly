@@ -58,5 +58,5 @@ server.register(visitUrlRoute);
 server.register(exportUrlsRoute);
 
 server.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
-  console.log("HTTP Server running!");
+  console.log("HTTP Server running!!");
 });
