@@ -1,3 +1,4 @@
+import { corsOptions } from "@/shared/cors-options";
 import { errorHandler } from "@/shared/error-handler";
 import { fastifyCors } from "@fastify/cors";
 import rateLimit from "@fastify/rate-limit";
@@ -23,7 +24,7 @@ server.setSerializerCompiler(serializerCompiler);
 
 server.setErrorHandler((error, _, reply) => errorHandler(reply, error));
 
-server.register(fastifyCors, { origin: "*" });
+server.register(fastifyCors, corsOptions);
 
 server.register(rateLimit, {
   max: 120,
