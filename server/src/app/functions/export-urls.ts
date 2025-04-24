@@ -7,6 +7,7 @@ import { ilike } from "drizzle-orm";
 import { PassThrough, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { z } from "zod";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 import { UnexpectedError } from "../errors/unexpected-error";
 
 const exportUrlsInput = z.object({
@@ -78,11 +79,12 @@ export const exportUrls = async(
     contentStream: uploadToStorageStream,
   });
 
-  const [url, error] = await tryCatch(() => Promise.all([uploadToStorage, convertToCSVPipeLine]))
+  const [result, error] = await tryCatch(() => Promise.all([uploadToStorage, convertToCSVPipeLine]))
 
-  if (error || !url) {
-    throw new UnexpectedError("Failed to execute operation")
+  if ((error && !(error instanceof ResourceNotFoundError)) || !result) {
+    throw new UnexpectedError()
   }
-
-  return { reportUrl: url as NonNullable<typeof url>}
+  
+  const [uploadResult] = result
+  return { reportUrl: uploadResult.url }
 }
