@@ -1,5 +1,5 @@
+import { env } from "@/env";
 import { useCallback, useEffect, useRef, useState } from "react";
-
 interface RequestOptions<TBody, TParams, TData, TError> {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: TBody;
@@ -33,7 +33,7 @@ export const useRequest = <
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const sendRequest = useCallback(
-    (url: string, options?: RequestOptions<TBody, TParams, TData, TError>) => {
+    (path: string, options?: RequestOptions<TBody, TParams, TData, TError>) => {
       setData(null);
       setError(null);
       setLoading(true);
@@ -58,7 +58,11 @@ export const useRequest = <
       if (options?.body) {
         fetchOptions.body = JSON.stringify(options.body);
       }
-
+      const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+      const query = options?.params
+        ? `?${new URLSearchParams(options.params)}`
+        : "";
+      const url = `${env.VITE_API_BASE_URL}${normalizedPath}${query}`;
       fetch(
         url + "?" + new URLSearchParams(options?.params ?? {}).toString(),
         fetchOptions,

@@ -25,7 +25,7 @@ export const DownloadCSV = ({ isDisabled }: DownloadCSV) => {
         active={isLoading}
         disabled={isLoading || isDisabled}
         onClick={() =>
-          getReportUrl.sendRequest("/api/urls/exports", {
+          getReportUrl.sendRequest("urls/exports", {
             method: "POST",
             body: {},
             onSuccess: ({ reportUrl }) => {

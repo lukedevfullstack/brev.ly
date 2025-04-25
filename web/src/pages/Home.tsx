@@ -22,7 +22,7 @@ export const Home = () => {
   const { pushToast } = useToast();
 
   useOnMount(() => {
-    fetchAllLinks("/api/urls", {
+    fetchAllLinks("urls", {
       method: "GET",
       onSuccess: (res) => setLinks(res.urls),
     });
@@ -35,7 +35,7 @@ export const Home = () => {
           onLinkCreate={(data: { originalUrl: string; shortUrl: string }) => {
             const normalizedUrl = normalizeUrl(data.originalUrl);
 
-            createLink("/api/urls", {
+            createLink("urls", {
               method: "POST",
               body: {
                 originalUrl: normalizedUrl,
@@ -72,7 +72,7 @@ export const Home = () => {
           onLinkClick={async (shortUrl: string) => {
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            fetchSingleLink(`/api/urls/${shortUrl}`, {
+            fetchSingleLink(`urls/${shortUrl}`, {
               method: "GET",
               onSuccess: (updatedLink) => {
                 setLinks((prev) =>
@@ -84,7 +84,7 @@ export const Home = () => {
             });
           }}
           onLinkDelete={async (shortUrl: string) => {
-            deleteLink(`/api/urls/${shortUrl}`, {
+            deleteLink(`urls/${shortUrl}`, {
               method: "DELETE",
               body: {},
               onSuccess: () => {
