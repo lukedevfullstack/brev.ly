@@ -11,5 +11,6 @@ export const corsOptions: FastifyCorsOptions = {
       callback(new Error("Not allowed by CORS"), false);
     }
   },
+  methods: ["GET", "POST", "DELETE"],
   credentials: true,
 };
