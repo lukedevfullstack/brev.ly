@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { useCallback, useEffect, useRef, useState } from "react";
+
 interface RequestOptions<TBody, TParams, TData, TError> {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: TBody;
@@ -58,15 +59,18 @@ export const useRequest = <
       if (options?.body) {
         fetchOptions.body = JSON.stringify(options.body);
       }
+
       const normalizedPath = path.startsWith("/") ? path : `/${path}`;
       const query = options?.params
-        ? `?${new URLSearchParams(options.params)}`
+        ? `?${new URLSearchParams(options.params).toString()}`
         : "";
-      const url = `${env.VITE_API_BASE_URL}${normalizedPath}${query}`;
-      fetch(
-        url + "?" + new URLSearchParams(options?.params ?? {}).toString(),
-        fetchOptions,
-      )
+
+      const isFullUrl = /^https?:\/\//i.test(path);
+      const url = isFullUrl
+        ? `${path}${query}`
+        : `${env.VITE_API_BASE_URL}${normalizedPath}${query}`;
+
+      fetch(url, fetchOptions)
         .then(async (response) => {
           if (!response.ok) {
             const errorData = await response.json().catch(() => null);
