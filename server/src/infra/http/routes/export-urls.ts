@@ -21,14 +21,11 @@ export const exportUrlsRoute: FastifyPluginAsyncZod = async (server) => {
     },
     async (request, reply) => {
       const { searchQuery } = request.query;
-
-      const { reportUrl } = await exportUrls({
-        searchQuery,
-      });
-
-      const [{ url }] = reportUrl;
-
-      return reply.status(200).send({ reportUrl: url });
+  
+      const { reportUrl } = await exportUrls({ searchQuery });
+  
+      return reply.status(200).send({ reportUrl });
     }
   );
+  
 };
