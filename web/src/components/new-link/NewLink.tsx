@@ -8,6 +8,8 @@ import { Label } from "../ui/label/Label";
 
 interface NewLink {
   onLinkCreate: (params: { originalUrl: string; shortUrl: string }) => void;
+  isCreatingLink: boolean;
+  isLoadingLinks: boolean;
 }
 
 const formFields = [
@@ -25,8 +27,12 @@ const formFields = [
   },
 ] as const;
 
-export const NewLink = ({ onLinkCreate }: NewLink) => {
-  const { values, errors, submitting, handleChange, handleSubmit } = useForm({
+export const NewLink = ({
+  onLinkCreate,
+  isCreatingLink,
+  isLoadingLinks,
+}: NewLink) => {
+  const { values, errors, handleChange, handleSubmit } = useForm({
     initialValues: {
       originalUrl: "",
       shortUrl: "",
@@ -77,9 +83,9 @@ export const NewLink = ({ onLinkCreate }: NewLink) => {
           e.preventDefault();
           handleSubmit();
         }}
-        disabled={submitting}
+        disabled={isCreatingLink || isLoadingLinks}
       >
-        {submitting ? "Salvando..." : "Salvar link"}
+        {isCreatingLink ? "Salvando..." : "Salvar link"}
       </Button>
     </form>
   );

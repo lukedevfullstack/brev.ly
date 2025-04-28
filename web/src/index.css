@@ -65,6 +65,26 @@
   .page {
     @apply relative flex h-auto w-screen flex-col;
   }
+  .border-active {
+    @apply animate-border box-border border-[2px] border-transparent;
+    background:
+      linear-gradient(
+          45deg,
+          var(--gray-100),
+          var(--gray-100) 50%,
+          var(--gray-100)
+        )
+        padding-box,
+      conic-gradient(
+          from var(--border-angle),
+          var(--border-start, var(--gray-100)) 80%,
+          var(--border-middle, var(--blue-base)) 86%,
+          var(--border-glow, var(--blue-dark)) 90%,
+          var(--border-middle, var(--blue-base)) 94%,
+          var(--border-end, var(--gray-200)) 100%
+        )
+        border-box;
+  }
   .border-active-primary {
     @apply animate-border box-border border-[2px] border-transparent;
     background:

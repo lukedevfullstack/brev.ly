@@ -6,3 +6,8 @@ export interface Link {
   createdAt: string;
   lastVisited: string | null;
 }
+
+export interface LinkWithStatus extends Link {
+  isDeleting?: boolean;
+  isUpdating?: boolean;
+}

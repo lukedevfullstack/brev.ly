@@ -9,6 +9,7 @@ interface RequestOptions<TBody, TParams, TData, TError> {
   mode?: RequestMode;
   onSuccess?: (data: TData, response: Response) => void;
   onError?: (error: TError, response?: Response) => void;
+  abortPrevious?: boolean;
 }
 
 interface UseRequestReturn<TData, TError, TBody, TParams> {
@@ -31,7 +32,8 @@ export const useRequest = <
   const [data, setData] = useState<TData | null>(null);
   const [error, setError] = useState<TError | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const abortControllersRef = useRef<AbortController[]>([]);
 
   const sendRequest = useCallback(
     (path: string, options?: RequestOptions<TBody, TParams, TData, TError>) => {
@@ -39,12 +41,13 @@ export const useRequest = <
       setError(null);
       setLoading(true);
 
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
+      if (options?.abortPrevious !== false) {
+        abortControllersRef.current.forEach((controller) => controller.abort());
+        abortControllersRef.current = [];
       }
 
       const abortController = new AbortController();
-      abortControllerRef.current = abortController;
+      abortControllersRef.current.push(abortController);
 
       const fetchOptions: RequestInit = {
         method: options?.method || "GET",
@@ -105,20 +108,24 @@ export const useRequest = <
         })
         .finally(() => {
           setLoading(false);
+          abortControllersRef.current = abortControllersRef.current.filter(
+            (c) => c !== abortController,
+          );
         });
     },
     [],
   );
 
   const abortRequest = useCallback(() => {
-    abortControllerRef.current?.abort();
+    abortControllersRef.current.forEach((controller) => controller.abort());
+    abortControllersRef.current = [];
   }, []);
 
   useEffect(() => {
     return () => {
-      abortControllerRef.current?.abort();
+      abortRequest();
     };
-  }, []);
+  }, [abortRequest]);
 
   return { data, error, loading, sendRequest, abortRequest };
 };

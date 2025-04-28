@@ -3,21 +3,21 @@ import { NewLink } from "@/components/new-link/NewLink";
 import { useToast } from "@/components/ui/toast/toast-context/ToastContext";
 import { useOnMount } from "@/hooks/use-on-mount";
 import { useRequest } from "@/hooks/use-request";
-import { Link } from "@/types/link";
+import { LinkWithStatus } from "@/types/link";
 import { normalizeUrl } from "@/utils/normalize-url";
 import { useState } from "react";
 
 export const Home = () => {
-  const [links, setLinks] = useState<Link[]>([]);
-  const { loading, sendRequest: fetchAllLinks } = useRequest<
-    { urls: Link[] },
+  const [links, setLinks] = useState<LinkWithStatus[]>([]);
+  const { loading: isLoadingLinks, sendRequest: fetchAllLinks } = useRequest<
+    { urls: LinkWithStatus[] },
     string
   >();
-  const { sendRequest: createLink } = useRequest<
-    Link,
+  const { loading: isCreatingLink, sendRequest: createLink } = useRequest<
+    LinkWithStatus,
     { originalUrl: string; shortUrl: string }
   >();
-  const { sendRequest: fetchSingleLink } = useRequest<Link, string>();
+  const { sendRequest: fetchSingleLink } = useRequest<LinkWithStatus, string>();
   const { sendRequest: deleteLink } = useRequest<null, string>();
   const { pushToast } = useToast();
 
@@ -28,10 +28,23 @@ export const Home = () => {
     });
   });
 
+  const updateLinkStatus = (
+    shortUrl: string,
+    updates: Partial<LinkWithStatus>,
+  ) => {
+    setLinks((prev) =>
+      prev.map((link) =>
+        link.shortUrl === shortUrl ? { ...link, ...updates } : link,
+      ),
+    );
+  };
+
   return (
     <main className="page 3xl:justify-center items-center">
-      <div className="3xl:grid 3xl:grid-cols-10 3xl:gap-[1.25rem] 3xl:w-full 3xl:px-[15%] 3xl:pt-0 relative flex flex-col gap-3 pt-20 3xl:my-[20dvh]">
+      <div className="3xl:grid 3xl:grid-cols-10 3xl:gap-[1.25rem] 3xl:w-full 3xl:px-[15%] 3xl:pt-0 3xl:my-[20dvh] relative flex flex-col gap-3 pt-20">
         <NewLink
+          isCreatingLink={isCreatingLink}
+          isLoadingLinks={isLoadingLinks}
           onLinkCreate={(data: { originalUrl: string; shortUrl: string }) => {
             const normalizedUrl = normalizeUrl(data.originalUrl);
 
@@ -68,12 +81,13 @@ export const Home = () => {
         />
         <MyLinks
           links={links}
-          loading={loading}
+          isLoadingLinks={isLoadingLinks}
           onLinkClick={async (shortUrl: string) => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            updateLinkStatus(shortUrl, { isUpdating: true });
 
             fetchSingleLink(`urls/${shortUrl}`, {
               method: "GET",
+              abortPrevious: false,
               onSuccess: (updatedLink) => {
                 setLinks((prev) =>
                   prev.map((link) =>
@@ -81,12 +95,18 @@ export const Home = () => {
                   ),
                 );
               },
+              onError: () => {
+                updateLinkStatus(shortUrl, { isUpdating: false });
+              },
             });
           }}
           onLinkDelete={async (shortUrl: string) => {
+            updateLinkStatus(shortUrl, { isDeleting: true });
+
             deleteLink(`urls/${shortUrl}`, {
               method: "DELETE",
               body: {},
+              abortPrevious: false,
               onSuccess: () => {
                 pushToast({
                   variant: "success",
@@ -106,6 +126,7 @@ export const Home = () => {
                   description: `Erro ao deletar o link. Tente novamente mais tarde.`,
                   className: "text-red-600",
                 });
+                updateLinkStatus(shortUrl, { isDeleting: false });
               },
             });
           }}

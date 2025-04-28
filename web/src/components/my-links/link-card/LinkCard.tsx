@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import { CopyUrl } from "./copy-url/CopyUrl";
 import { DeleteUrl } from "./delete-url/DeleteUrl";
 
@@ -6,6 +7,8 @@ interface LinkCard {
   originalUrl: string;
   shortUrl: string;
   visitCount: number;
+  isUpdating?: boolean;
+  isDeleting?: boolean;
   onLinkClick: () => void;
   onLinkDelete: () => void;
 }
@@ -21,6 +24,8 @@ export const LinkCard = ({
   originalUrl,
   shortUrl,
   visitCount,
+  isUpdating,
+  isDeleting,
   onLinkClick,
   onLinkDelete,
 }: LinkCard) => {
@@ -34,7 +39,12 @@ export const LinkCard = ({
   };
 
   return (
-    <div className="3xl:h-[4.625rem] 3xl:py-4 flex h-[4.125rem] w-full snap-start snap-always items-center justify-between gap-[1.25rem] py-3 text-nowrap duration-150">
+    <div
+      className={twMerge(
+        "3xl:h-[4.625rem] 3xl:py-4 flex h-[4.125rem] w-full snap-start snap-always items-center justify-between gap-[1.25rem] py-3 text-nowrap duration-150",
+        (isUpdating || isDeleting) && "border-active opacity-75",
+      )}
+    >
       <a
         href={`${baseUrl}/${shortUrl}`}
         target="_blank"
@@ -58,7 +68,7 @@ export const LinkCard = ({
         </p>
         <div className="flex items-center justify-end gap-1">
           <CopyUrl shortUrl={shortUrl} />
-          <DeleteUrl shortUrl={shortUrl} onLinkDelete={onLinkDelete}/>
+          <DeleteUrl shortUrl={shortUrl} onLinkDelete={onLinkDelete} />
         </div>
       </div>
     </div>
