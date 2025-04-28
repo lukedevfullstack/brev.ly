@@ -27,9 +27,13 @@ export const useForm = <T extends Record<string, string>>({
   };
   
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) {
+      e.preventDefault();
+    }
+  
     const newErrors: FormErrors<T> = {};
-
+  
     for (const key in validators) {
       const validate = validators[key];
       if (validate) {
@@ -39,11 +43,13 @@ export const useForm = <T extends Record<string, string>>({
         }
       }
     }
-
+  
     setErrors(newErrors);
-
-    if (Object.keys(newErrors).length > 0) return;
-
+  
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+  
     setSubmitting(true);
     try {
       onSubmit(values);

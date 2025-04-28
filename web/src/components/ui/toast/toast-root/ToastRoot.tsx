@@ -8,10 +8,7 @@ interface ToastRoot extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ToastRoot = forwardRef<HTMLDivElement, ToastRoot>(
-  (
-    { className, title, description, children, ...props },
-    ref,
-  ) => {
+  ({ className, title, description, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -21,7 +18,7 @@ export const ToastRoot = forwardRef<HTMLDivElement, ToastRoot>(
         aria-labelledby={title}
         aria-describedby={description}
         className={twMerge(
-          "3xl:w-md relative flex w-[22.875rem] flex-col rounded-sm bg-[var(--gray-100)] text-[var(--gray-500)] shadow-xl",
+          "3xl:w-md relative flex w-[22.875rem] flex-col rounded-sm bg-[var(--gray-100)] text-[var(--gray-500)] shadow-xl focus:outline-1 focus:outline-[var(--blue-dark)]",
           className,
         )}
         onClick={(e) => e.stopPropagation()}

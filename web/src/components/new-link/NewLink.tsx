@@ -39,7 +39,13 @@ export const NewLink = ({ onLinkCreate }: NewLink) => {
   });
 
   return (
-    <div className="3xl:col-span-4 3xl:w-auto 3xl:flex-1 3xl:max-w-[23.75rem] 3xl:min-h-[21.25rem] 3xl:p-8 relative flex h-fit min-h-[19.75rem] w-[22.875rem] flex-1 flex-col items-start gap-6 self-stretch rounded-lg bg-[var(--gray-100)] p-6">
+    <form
+      className="3xl:col-span-4 3xl:w-auto 3xl:flex-1 3xl:max-w-[23.75rem] 3xl:min-h-[21.25rem] 3xl:p-8 relative flex h-fit min-h-[19.75rem] w-[22.875rem] flex-1 flex-col items-start gap-6 self-stretch rounded-lg bg-[var(--gray-100)] p-6"
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <Icons.Logo className="max-3xl:right-0 max-3xl:w-full 3xl:-top-[3.5rem] absolute -top-[3rem] left-0 text-[var(--blue-dark)] duration-150" />
       <h2 className="text-lg">Novo link</h2>
 
@@ -66,9 +72,15 @@ export const NewLink = ({ onLinkCreate }: NewLink) => {
         ))}
       </div>
 
-      <Button onClick={handleSubmit} disabled={submitting}>
+      <Button
+        onClick={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+        disabled={submitting}
+      >
         {submitting ? "Salvando..." : "Salvar link"}
       </Button>
-    </div>
+    </form>
   );
 };
