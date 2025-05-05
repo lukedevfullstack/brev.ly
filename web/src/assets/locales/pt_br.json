@@ -1,0 +1,118 @@
+{
+  "languages": {
+    "pt_br": "Português",
+    "en_us": "Inglês",
+    "es_es": "Espanhol"
+  },
+  "pages": {
+    "home": {
+      "my_links": {
+        "title": "Meus links",
+        "download_csv": {
+          "action": "Baixar CSV",
+          "toast": {
+            "success": {
+              "title": "Sucesso!",
+              "description": "Download do CSV realizado com sucesso.."
+            },
+            "error": {
+              "title": "Erro",
+              "description": "Erro ao baixar CSV. Tente novamente mais tarde."
+            }
+          }
+        },
+        "loading_links": "Carregando links...",
+        "no_registered_links": "Ainda não existem links cadastrados",
+        "link_card": {
+          "delete_url": {
+            "dialog": {
+              "title": "Deletar URL?",
+              "description": "Isso removerá permanentemente o link “brev.ly/{{shortUrl}}” e seu histórico de acessos. Esta ação não poderá ser desfeita",
+              "actions": {
+                "delete": "Deletar URL",
+                "close": "Fechar"
+              }
+            },
+            "toast": {
+              "success": {
+                "title": "Sucesso!",
+                "description": "O link “{{shortUrl}}” foi deletado com sucesso."
+              },
+              "error": {
+                "title": "Erro",
+                "description": "Erro ao deletar o link. Tente novamente mais tarde."
+              }
+            }
+          },
+          "copy_url": {
+            "toast": {
+              "success": {
+                "title": "Sucesso!",
+                "description": "O link “{{shortUrl}}” foi copiado para a área de transferência."
+              },
+              "error": {
+                "title": "Erro",
+                "description": "Erro ao copiar o link. Tente novamente mais tarde."
+              }
+            }
+          },
+          "visit_zero": "{{count}} acessos",
+          "visit_one": "{{count}} acesso",
+          "visit_other": "{{count}} acessos"
+        }
+      },
+      "new_link": {
+        "title": "Novo link",
+        "form": {
+          "original_url": {
+            "label": "link original",
+            "placeholder": "www.exemplo.com.br",
+            "error": {
+              "field_is_required": "O link original é obrigatório.",
+              "invalid_url": "Insira um link válido.",
+              "invalid_domain": "O link deve conter um domínio válido (ex: '.com').",
+              "invalid_last_char": "O domínio não pode terminar com um ponto."
+            }
+          },
+          "short_url": {
+            "label": "link encurtado",
+            "placeholder": "",
+            "error": {
+              "invalid_length": "O link encurtado deve ter entre 4 e 15 caracteres.",
+              "invalid_format": "O link encurtado deve conter apenas letras minúsculas, números, '.' (ponto), '-' (hífen) ou '_' (sublinhado).",
+              "invalid_edges": "O link encurtado não pode começar ou terminar com '.', '-', ou '_'.",
+              "invalid_sequence": "O link encurtado não pode conter caracteres especiais repetidos ou misturados (ex: '--', '__', '..', '-_', '_.' etc).",
+              "reserved_url": "Este link encurtado é reservado."
+            }
+          }
+        },
+        "toast": {
+          "success": {
+            "title": "Sucesso!",
+            "description": "O link “{{shortUrl}}” foi criado com sucesso."
+          },
+          "error": {
+            "title": "Erro",
+            "description": "Erro ao criar o link. Tente novamente mais tarde.",
+            "conflict_description": "Link encurtado já existe."
+          }
+        },
+        "actions": {
+          "save": "Salvar link",
+          "saving": "Salvando..."
+        }
+      }
+    },
+    "not_found": {
+      "title": "Link não encontrado",
+      "description": "O link que você está tentando acessar não existe, foi removido ou é uma URL inválida.",
+      "direction": "Saiba mais em"
+    },
+    "redirect": {
+      "title": "Redirecionando...",
+      "description": "O link será aberto automaticamente em alguns instantes.",
+      "subdescription": "Não foi redirecionado?",
+      "direction": "Acesse aqui"
+    }
+  }
+}
