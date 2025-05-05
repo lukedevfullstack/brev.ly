@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import { CopyUrl } from "./copy-url/CopyUrl";
 import { DeleteUrl } from "./delete-url/DeleteUrl";
@@ -29,6 +30,9 @@ export const LinkCard = ({
   onLinkClick,
   onLinkDelete,
 }: LinkCard) => {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.link_card",
+  });
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const isLeftClick = e.button === Clicks.LEFT_CLICK;
     const isMiddleClick = e.button === Clicks.MIDDLE_CLICK;
@@ -64,7 +68,7 @@ export const LinkCard = ({
       </a>
       <div className="flex h-full items-center justify-end gap-[1.25rem] pl-[1.25rem]">
         <p className="text-sm text-[var(--gray-500)]">
-          {visitCount} {visitCount === 1 ? "acesso" : "acessos"}
+          {t("visit", { count: visitCount })}
         </p>
         <div className="flex items-center justify-end gap-1">
           <CopyUrl shortUrl={shortUrl} />

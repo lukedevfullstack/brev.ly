@@ -6,8 +6,21 @@ import { useRequest } from "@/hooks/use-request";
 import { LinkWithStatus } from "@/types/link";
 import { normalizeUrl } from "@/utils/normalize-url";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Home = () => {
+  const { t: ts } = useTranslation("translation", {
+    keyPrefix: "pages.home.new_link.toast.success",
+  });
+  const { t: te } = useTranslation("translation", {
+    keyPrefix: "pages.home.new_link.toast.error",
+  });
+  const { t: tds } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.link_card.delete_url.toast.success",
+  });
+  const { t: tde } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.link_card.delete_url.toast.error",
+  });
   const [links, setLinks] = useState<LinkWithStatus[]>([]);
   const { loading: isLoadingLinks, sendRequest: fetchAllLinks } = useRequest<
     { urls: LinkWithStatus[] },
@@ -57,8 +70,10 @@ export const Home = () => {
               onSuccess: (newLink) => {
                 pushToast({
                   variant: "success",
-                  title: "Sucesso!",
-                  description: `O link "${newLink.shortUrl}" foi criado com sucesso!`,
+                  title: ts("title"),
+                  description: ts("description", {
+                    shortUrl: newLink.shortUrl,
+                  }),
                   className: "text-[var(--blue-base)]",
                 });
 
@@ -68,11 +83,12 @@ export const Home = () => {
                 console.warn(err);
                 pushToast({
                   variant: "error",
-                  title: "Erro",
-                  description:
+                  title: te("title"),
+                  description: te(
                     res?.status === 409
-                      ? "Link encurtado já existe."
-                      : "Erro ao criar o link. Tente novamente mais tarde.",
+                      ? "conflict_description"
+                      : "description",
+                  ),
                   className: "text-red-600",
                 });
               },
@@ -84,6 +100,8 @@ export const Home = () => {
           isLoadingLinks={isLoadingLinks}
           onLinkClick={async (shortUrl: string) => {
             updateLinkStatus(shortUrl, { isUpdating: true });
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
 
             fetchSingleLink(`urls/${shortUrl}`, {
               method: "GET",
@@ -110,8 +128,8 @@ export const Home = () => {
               onSuccess: () => {
                 pushToast({
                   variant: "success",
-                  title: "Sucesso!",
-                  description: `O link "${shortUrl}" foi deletado com sucesso!.`,
+                  title: tds("title"),
+                  description: tds("description", { shortUrl }),
                   className: "text-[var(--blue-base)]",
                 });
                 setLinks((prev) =>
@@ -122,8 +140,8 @@ export const Home = () => {
                 console.warn(err);
                 pushToast({
                   variant: "error",
-                  title: "Erro",
-                  description: `Erro ao deletar o link. Tente novamente mais tarde.`,
+                  title: tde("title"),
+                  description: tde("description"),
                   className: "text-red-600",
                 });
                 updateLinkStatus(shortUrl, { isDeleting: false });

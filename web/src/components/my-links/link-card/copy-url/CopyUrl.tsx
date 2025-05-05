@@ -2,6 +2,7 @@ import { IconButton } from "@/components/ui/buttons/icon-button/IconButton";
 import { useToast } from "@/components/ui/toast/toast-context/ToastContext";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { Icons } from "@/icons/Icons";
+import { useTranslation } from "react-i18next";
 
 interface CopyUrl {
   shortUrl: string;
@@ -9,6 +10,12 @@ interface CopyUrl {
 
 const baseUrl = new URL(window.location.href).origin;
 export const CopyUrl = ({ shortUrl }: CopyUrl) => {
+  const { t: ts } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.link_card.copy_url.toast.success",
+  });
+  const { t: te } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.link_card.copy_url.toast.error",
+  });
   const copyData = useCopyToClipboard();
   const { pushToast } = useToast();
 
@@ -24,16 +31,16 @@ export const CopyUrl = ({ shortUrl }: CopyUrl) => {
             onSuccess: () =>
               pushToast({
                 variant: "success",
-                title: "Sucesso!",
-                description: `O link "${shortUrl}" foi copiado para a área de transferência.`,
+                title: ts("title"),
+                description: ts("description", { shortUrl }),
                 className: "text-[var(--blue-base)]",
               }),
             onError: (err) => {
               console.warn(err);
               pushToast({
                 variant: "error",
-                title: "Erro",
-                description: `Erro ao copiar o link. Tente novamente mais tarde.`,
+                title: te("title"),
+                description: te("description"),
                 className: "text-red-600",
               });
             },

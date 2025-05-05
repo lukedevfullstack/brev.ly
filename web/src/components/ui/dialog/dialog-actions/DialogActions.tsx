@@ -13,28 +13,17 @@ export interface Action {
 
 interface DialogActions {
   Actions?: Action[] | React.ReactNode;
-  onClose?: () => void;
   className?: string;
 }
 
-export const DialogActions = ({
-  Actions,
-  className,
-  onClose,
-}: DialogActions) => {
+export const DialogActions = ({ Actions, className }: DialogActions) => {
   return (
     <span
       className={twMerge(
-        "3xl:px-4 3xl:py-3 flex h-fit min-h-14 items-center justify-end gap-2 px-2 py-1 text-sm",
+        "3xl:px-4 3xl:py-3 flex h-fit min-h-14 flex-row items-center justify-end gap-2 px-2 py-1 text-sm",
         className,
       )}
     >
-      {onClose && (
-        <Button variant="secondary" size="small" onClick={onClose}>
-          Fechar
-        </Button>
-      )}
-
       {isValidElement(Actions)
         ? Actions
         : Array.isArray(Actions) &&

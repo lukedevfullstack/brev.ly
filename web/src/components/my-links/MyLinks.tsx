@@ -1,5 +1,6 @@
 import { Icons } from "@/icons/Icons";
 import { LinkWithStatus } from "@/types/link";
+import { useTranslation } from "react-i18next";
 import { Divider } from "../ui/divider/Divider";
 import { ScrollArea } from "../ui/scroll-area/ScrollArea";
 import { DownloadCSV } from "./download-csv/DownloadCsv";
@@ -12,21 +13,29 @@ interface MyLinks {
   onLinkDelete: (shortUrl: string) => void;
 }
 
-const NoRegisteredLinks = () => (
-  <span className="flex h-auto w-auto flex-1 flex-grow flex-col items-center justify-center gap-4 self-stretch px-4 py-6">
-    <Icons.Link className="text-[var(--gray-400)]" />
-    <p className="text-xs text-[var(--gray-500)] uppercase">
-      Ainda não existem links cadastrados
-    </p>
-  </span>
-);
+const NoRegisteredLinks = () => {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links",
+  });
+  return (
+    <span className="flex h-auto w-auto flex-1 flex-grow flex-col items-center justify-center gap-4 self-stretch px-4 py-6">
+      <Icons.Link className="text-[var(--gray-400)]" />
+      <p className="text-xs text-[var(--gray-500)] uppercase">
+        {t("no_registered_links")}
+      </p>
+    </span>
+  );
+};
 
 const LoadingLinks = () => {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links",
+  });
   return (
     <span className="border-active flex h-auto w-auto flex-1 flex-grow flex-col items-center justify-center gap-4 self-stretch px-4 py-6">
       <Icons.Loading className="animate-fast-spin text-[var(--gray-400)]" />
       <p className="text-xs text-[var(--gray-500)] uppercase">
-        Carregando links...
+        {t("loading_links")}
       </p>
     </span>
   );
@@ -38,10 +47,13 @@ export const MyLinks = ({
   onLinkClick,
   onLinkDelete,
 }: MyLinks) => {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links",
+  });
   return (
     <div className="3xl:col-span-6 3xl:w-auto 3xl:flex-1 3xl:min-w-[36.25rem] 3xl:gap-6 3xl:h-auto 3xl:p-8 3xl:max-h-fit relative flex max-h-[21.75rem] w-[22.875rem] flex-col items-start gap-[1.25rem] rounded-lg bg-[var(--gray-100)] p-6">
       <span className="flex h-fit w-full items-center justify-between">
-        <h2 className="text-lg">Meus links</h2>
+        <h2 className="text-lg">{t("title")}</h2>
         <DownloadCSV isDisabled={isLoadingLinks || !links?.length} />
       </span>
       <div className="flex w-full flex-1 flex-col self-stretch">

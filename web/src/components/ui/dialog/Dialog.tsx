@@ -108,7 +108,7 @@ export const Dialog = ({
             isReverse
           />
         )}
-        {Actions ?? <DialogActions Actions={actions} onClose={onClose} />}
+        {Actions ?? <DialogActions Actions={actions} />}
       </DialogRoot>
     </Portal>
   );

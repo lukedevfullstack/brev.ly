@@ -1,19 +1,28 @@
 import { TextButton } from "@/components/ui/buttons/text-button/TextButton";
-import { Dialog } from "@/components/ui/dialog/Dialog";
+import { useToast } from "@/components/ui/toast/toast-context/ToastContext";
 import { useRequest } from "@/hooks/use-request";
-import { useToggle } from "@/hooks/use-toggle";
 import { Icons } from "@/icons/Icons";
 import { getFilenameFromUrl } from "@/utils/get-filename-from-url";
 import { triggerDownloadFromBlob } from "@/utils/trigger-download-from-blob";
+import { useTranslation } from "react-i18next";
 
 interface DownloadCSV {
   isDisabled?: boolean;
 }
 
 export const DownloadCSV = ({ isDisabled }: DownloadCSV) => {
-  const [isErrorDialogToggled, onErrorDialogToggle] = useToggle();
+  const { t } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.download_csv",
+  });
+  const { t: ts } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.download_csv.toast.success",
+  });
+  const { t: te } = useTranslation("translation", {
+    keyPrefix: "pages.home.my_links.download_csv.toast.error",
+  });
   const getReportUrl = useRequest<{ reportUrl: string }, string>();
   const downloadCSV = useRequest();
+  const { pushToast } = useToast();
 
   const isLoading = getReportUrl.loading || downloadCSV.loading;
 
@@ -22,6 +31,7 @@ export const DownloadCSV = ({ isDisabled }: DownloadCSV) => {
       <TextButton
         variant="secondary"
         size="small"
+        className="min-w-fit"
         active={isLoading}
         disabled={isLoading || isDisabled}
         onClick={() =>
@@ -38,9 +48,20 @@ export const DownloadCSV = ({ isDisabled }: DownloadCSV) => {
                     const blob = await response.blob();
                     const filename = getFilenameFromUrl(reportUrl);
                     triggerDownloadFromBlob(blob, filename);
+                    pushToast({
+                      variant: "success",
+                      title: ts("title"),
+                      description: ts("description"),
+                      className: "text-[var(--blue-base)]",
+                    });
                   } catch (err) {
-                    onErrorDialogToggle();
                     console.error("Failed to download CSV:", err);
+                    pushToast({
+                      variant: "error",
+                      title: te("title"),
+                      description: te("description"),
+                      className: "text-red-600",
+                    });
                   }
                 },
               });
@@ -53,17 +74,8 @@ export const DownloadCSV = ({ isDisabled }: DownloadCSV) => {
         ) : (
           <Icons.DownloadSimple className="size-4" />
         )}
-        <span>Baixar CSV</span>
+        <span>{t("action")}</span>
       </TextButton>
-      <Dialog
-        isOpen={isErrorDialogToggled}
-        onClose={onErrorDialogToggle}
-        variant="error"
-        title="Erro"
-        description="Erro ao baixar CSV. Tente novamente mais tarde."
-        className="divide-red-200 bg-red-50 text-red-600"
-        selfClosesAfter={5000}
-      />
     </>
   );
 };
