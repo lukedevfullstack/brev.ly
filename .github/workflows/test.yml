@@ -1,0 +1,52 @@
+name: Brevly Server Tests
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - server/**
+      - .github/workflows/test.yml
+
+jobs:
+  detect_changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      server_changed: ${{ steps.filter.outputs.server }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Filter server changes
+        id: filter
+        uses: dorny/paths-filter@v3.0.2
+        with:
+          filters: |
+            server:
+              - server/**
+
+  test:
+    name: Run Unit Tests
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.server_changed == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test

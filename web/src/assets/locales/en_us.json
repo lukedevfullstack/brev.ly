@@ -1,0 +1,118 @@
+{
+  "languages": {
+    "pt_br": "Portuguese",
+    "en_us": "English",
+    "es_es": "Spanish"
+  },
+  "pages": {
+    "home": {
+      "my_links": {
+        "title": "My links",
+        "download_csv": {
+          "action": "Download CSV",
+          "toast": {
+            "success": {
+              "title": "Success!",
+              "description": "CSV download completed successfully."
+            },
+            "error": {
+              "title": "Error",
+              "description": "Error downloading CSV. Please try again later."
+            }
+          }
+        },
+        "loading_links": "Loading links...",
+        "no_registered_links": "There are no registered links yet",
+        "link_card": {
+          "delete_url": {
+            "dialog": {
+              "title": "Delete URL?",
+              "description": "This will permanently remove the link “brev.ly/{{shortUrl}}” and its access history. This action cannot be undone.",
+              "actions": {
+                "delete": "Delete URL",
+                "close": "Close"
+              }
+            },
+            "toast": {
+              "success": {
+                "title": "Success!",
+                "description": "The link “{{shortUrl}}” was successfully deleted."
+              },
+              "error": {
+                "title": "Error",
+                "description": "Error deleting the link. Please try again later."
+              }
+            }
+          },
+          "copy_url": {
+            "toast": {
+              "success": {
+                "title": "Success!",
+                "description": "The link “{{shortUrl}}” was copied to the clipboard."
+              },
+              "error": {
+                "title": "Error",
+                "description": "Error copying the link. Please try again later."
+              }
+            }
+          },
+          "visit_zero": "{{count}} visits",
+          "visit_one": "{{count}} visit",
+          "visit_other": "{{count}} visits"
+        }
+      },
+      "new_link": {
+        "title": "New link",
+        "form": {
+          "original_url": {
+            "label": "original link",
+            "placeholder": "www.example.com",
+            "error": {
+              "field_is_required": "The original link is required.",
+              "invalid_url": "Enter a valid link.",
+              "invalid_domain": "The link must contain a valid domain (e.g., '.com').",
+              "invalid_last_char": "The domain cannot end with a dot."
+            }
+          },
+          "short_url": {
+            "label": "short link",
+            "placeholder": "",
+            "error": {
+              "invalid_length": "The short link must be between 4 and 15 characters.",
+              "invalid_format": "The short link can only contain lowercase letters, numbers, '.' (dot), '-' (hyphen), or '_' (underscore).",
+              "invalid_edges": "The short link cannot start or end with '.', '-', or '_'.",
+              "invalid_sequence": "The short link cannot contain repeated or mixed special characters (e.g., '--', '__', '..', '-_', '_.' etc).",
+              "reserved_url": "This short link is reserved."
+            }
+          }
+        },
+        "toast": {
+          "success": {
+            "title": "Success!",
+            "description": "The link “{{shortUrl}}” was successfully created."
+          },
+          "error": {
+            "title": "Error",
+            "description": "Error creating the link. Please try again later.",
+            "conflict_description": "Short link already exists."
+          }
+        },
+        "actions": {
+          "save": "Save link",
+          "saving": "Saving..."
+        }
+      }
+    },
+    "not_found": {
+      "title": "Link not found",
+      "description": "The link you're trying to access doesn't exist, has been removed, or is an invalid URL.",
+      "direction": "Learn more at"
+    },
+    "redirect": {
+      "title": "Redirecting...",
+      "description": "The link will open automatically in a few moments.",
+      "subdescription": "Not redirected?",
+      "direction": "Click here"
+    }
+  }
+}

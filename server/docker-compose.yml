@@ -1,0 +1,51 @@
+services:
+  pg:
+    image: bitnami/postgresql:latest
+    container_name: brevly-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+    volumes:
+      - "./docker:/docker-entrypoint-initdb.d"
+    networks:
+      - brevly
+
+  migrator:
+    image: node:22-slim
+    container_name: brevly-migrator
+    working_dir: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - pg
+    environment:
+    - DATABASE_URL=postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@pg:5432/${POSTGRESQL_DATABASE}
+    command: sh -c "npm install && npx drizzle-kit migrate"
+    networks:
+      - brevly
+
+  server:
+    build: .
+    container_name: brevly-api
+    depends_on:
+      - pg
+    restart: unless-stopped
+    ports:
+      - "3333:3333"
+    environment:
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - DATABASE_URL=postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@pg:5432/${POSTGRESQL_DATABASE}
+      - CLOUDFLARE_ACCESS_KEY_ID=${CLOUDFLARE_ACCESS_KEY_ID}
+      - CLOUDFLARE_SECRET_ACCESS_KEY=${CLOUDFLARE_SECRET_ACCESS_KEY}
+      - CLOUDFLARE_BUCKET=${CLOUDFLARE_BUCKET}
+      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
+      - CLOUDFLARE_PUBLIC_URL=${CLOUDFLARE_PUBLIC_URL}
+    networks:
+      - brevly
+
+networks:
+  brevly:
+    driver: bridge
