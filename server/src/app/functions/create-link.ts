@@ -4,14 +4,14 @@ import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 const createLinkSchema = z.object({
-  urlOriginal: z.string().url(),
+  originUrl: z.string().url(),
   urlShortened: z.string().url(),
 })
 
 type CreateLinkProps = z.infer<typeof createLinkSchema>
 
 export async function createLinkFn(linkProps: CreateLinkProps) {
-  const { urlOriginal, urlShortened } = createLinkSchema.parse(linkProps)
+  const { originUrl, urlShortened } = createLinkSchema.parse(linkProps)
 
   const { links } = schema
 
@@ -24,7 +24,7 @@ export async function createLinkFn(linkProps: CreateLinkProps) {
   const [createdLink] = await db
     .insert(links)
     .values({
-      urlOriginal,
+      originUrl,
       urlShortened,
     })
     .returning()

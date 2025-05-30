@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const newLinkSchema = z.object({
+export const linkSchema = z.object({
   urlShortened: z.string().min(1, 'Informe o link encurtado'),
   urlOriginal: z
     .string()
@@ -8,4 +8,4 @@ export const newLinkSchema = z.object({
     .min(1, 'Informe o link original'),
 })
 
-export type NewLinkProps = z.infer<typeof newLinkSchema>
+export type NewLinkProps = z.infer<typeof linkSchema>

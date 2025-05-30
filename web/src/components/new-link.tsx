@@ -37,7 +37,7 @@ export function NewLink() {
           {isSubmitting && (
             <>
               <CircleNotch size={16} className="animate-spin" />
-              Salvando link...
+              Aguarde, estamos salvando o seu link...
             </>
           )}
           {!isSubmitting && 'Salvar link'}

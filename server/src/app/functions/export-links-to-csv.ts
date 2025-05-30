@@ -35,7 +35,7 @@ export async function exportLinksToCSVFn(reply: FastifyReply) {
       },
       {
         key: 'created_at',
-        header: 'Data de criação',
+        header: 'Data da criação',
       },
     ],
   })

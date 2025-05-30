@@ -16,7 +16,7 @@ export function Redirect() {
             O link será aberto automaticamente em alguns instantes.
           </span>
           <span className='font-semibold text-sm text-gray-500 text-center leading-[18px]'>
-            Não foi redirecionado? {urlOriginal !== null && <Link to={urlOriginal}>Acesse aqui</Link>}
+            Não foi redirecionado? {urlOriginal !== null && <Link to={urlOriginal}>Clique aqui</Link>}
           </span>
         </div>
       </Box>

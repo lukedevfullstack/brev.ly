@@ -40,7 +40,7 @@ export function RemoveLinkButton({
                 Excluir link
               </DialogRadix.Title>
               <DialogRadix.Description className="text-gray-400 text-sm text-center">
-                Você tem certeza que deseja excluir este link?
+                 Tem certeza que deseja excluir este link?
               </DialogRadix.Description>
             </div>
           </div>
