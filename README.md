@@ -1,4 +1,4 @@
-# 🏆 Brev.ly – Full Stack URL Shortener Challenge
+# 🏆 brev.ly – URL Shortener Challenge
 
 **Brev.ly** is a full-stack application challenge focused on developing a modern URL shortening service.
 The goal is to develop an application that allows users to create, list, and delete shortened links, track link visit counts, export link data in CSV format, and properly redirect shortened URLs to their original destinations.
