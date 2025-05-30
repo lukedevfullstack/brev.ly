@@ -1,76 +1,54 @@
-# 💻 Brev.ly Web – Frontend SPA
+# React + TypeScript + Vite
 
-This is the frontend interface for the **Brev.ly** URL shortener challenge.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-It is a single-page application built with **React**, **TypeScript**, and **TailwindCSS**, designed to communicate with the backend API and deliver a smooth, responsive user experience.
+Currently, two official plugins are available:
 
----
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## ⚙️ Tech Stack
+## Expanding the ESLint configuration
 
-- **[React](https://react.dev)** – declarative UI library  
-- **[TypeScript](https://www.typescriptlang.org)** – static typing for JavaScript  
-- **[TailwindCSS](https://tailwindcss.com)** – utility-first CSS framework  
-- **[React Router](https://reactrouter.com)** – client-side routing for React  
-- **[Vite](https://vitejs.dev)** – fast development bundler  
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
----
-
-## 🚀 Getting Started
-
-Follow the steps below to run the frontend locally:
-
-### 1. 📦 Install dependencies
-
-```bash
-npm install
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
 
-### 2. 🧪 Start the development server
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```bash
-npm run dev
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
 ```
-
-### 3. 🌐 Access the app
-
-The app should now be running and accessible at:
-
-```bash
-http://localhost:5173
-```
-
-You can update the port or proxy config in `vite.config.ts` as needed.
-
----
-
-## 📂 Available Scripts
-
-This project provides the following common scripts:
-
-| Command           | Description                          |
-|-------------------|--------------------------------------|
-| `npm run dev`     | Start the development server         |
-| `npm run build`   | Build the app for production         |
-| `npm run preview` | Preview the built app locally        |
-| `npm run lint`    | Run the linter (if configured)       |
-
----
-
-## 📄 Environment Variables
-
-Create a `.env` file in the `web/` directory. Example:
-
-```env
-VITE_API_URL=http://localhost:3333
-```
-
-This variable allows the frontend to communicate with the backend API.  
-You can add additional public environment variables prefixed with `VITE_` as needed.
-
----
-
-## 🎨 Figma Design
-
-You can view the official design layout here:  
-[🔗 Figma File – URL Shortener](https://www.figma.com/community/file/1477335071553579816/encurtador-de-links)

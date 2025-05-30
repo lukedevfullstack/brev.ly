@@ -3,7 +3,7 @@ import type { Config } from 'drizzle-kit'
 
 export default {
   dbCredentials: {
-    url: env.DATABASE_URL,
+    url: env.POSTGRES_URL,
   },
   dialect: 'postgresql',
   schema: 'src/infra/db/schemas/*',

@@ -1,63 +1,59 @@
-import { corsOptions } from "@/shared/cors-options";
-import { errorHandler } from "@/shared/error-handler";
-import { fastifyCors } from "@fastify/cors";
-import rateLimit from "@fastify/rate-limit";
-import { fastifySwagger } from "@fastify/swagger";
-import { fastifySwaggerUi } from "@fastify/swagger-ui";
-import { fastify } from "fastify";
+import fastifyCors from '@fastify/cors'
+import fastifySwagger from '@fastify/swagger'
+import scalarUI from '@scalar/fastify-api-reference'
+import fastify from 'fastify'
 import {
+  hasZodFastifySchemaValidationErrors,
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
-} from "fastify-type-provider-zod";
-import { createUrlRoute } from "./routes/create-url";
-import { deleteUrlRoute } from "./routes/delete-url";
-import { exportUrlsRoute } from "./routes/export-urls";
-import { getUrlByShortRoute } from "./routes/get-url-by-short";
-import { getUrlsRoute } from "./routes/get-urls";
-import { visitUrlRoute } from "./routes/visit-url";
+} from 'fastify-type-provider-zod'
+import { routes } from './routes'
 
-const server = fastify();
+const server = fastify()
 
-server.setValidatorCompiler(validatorCompiler);
-server.setSerializerCompiler(serializerCompiler);
+server.setValidatorCompiler(validatorCompiler)
+server.setSerializerCompiler(serializerCompiler)
 
-server.setErrorHandler((error, _, reply) => errorHandler(reply, error));
+server.setErrorHandler((error, request, reply) => {
+  if (hasZodFastifySchemaValidationErrors(error)) {
+    return reply.status(400).send({
+      message: 'Validation error',
+      errors: error.validation,
+    })
+  }
 
-server.register(fastifyCors, corsOptions);
+  return reply.status(500).send({
+    message: 'Internal server error',
+  })
+})
 
-server.register(rateLimit, {
-  max: 120,
-  timeWindow: "1 minute",
-  errorResponseBuilder: () => ({
-    statusCode: 429,
-    error: "Too Many Requests",
-    message:
-      "You have exceeded the allowed request limit. Please try again later.",
-  }),
-});
+server.register(fastifyCors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+})
 
 server.register(fastifySwagger, {
   openapi: {
     info: {
-      title: "Brevly Server",
-      version: "1.0.0",
+      title: 'Brev.ly API Docs',
+      version: '1.0.0',
     },
   },
   transform: jsonSchemaTransform,
-});
+})
 
-server.register(fastifySwaggerUi, {
-  routePrefix: "/docs",
-});
+Object.values(routes).map(route => server.register(route))
 
-server.register(createUrlRoute);
-server.register(getUrlsRoute);
-server.register(getUrlByShortRoute);
-server.register(deleteUrlRoute);
-server.register(visitUrlRoute);
-server.register(exportUrlsRoute);
+server.register(scalarUI, {
+  routePrefix: '/docs',
+  configuration: {
+    theme: 'purple',
+    layout: 'modern',
+  },
+})
 
-server.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
-  console.log("HTTP Server running!");
-});
+server.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
+  console.log('HTTP Server Running! 🚀')
+})

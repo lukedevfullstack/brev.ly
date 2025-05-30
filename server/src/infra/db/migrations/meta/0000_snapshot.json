@@ -1,64 +1,30 @@
 {
-  "id": "d4cfc7cf-59f4-40ce-b0e7-fd408275f49f",
+  "id": "067be8fb-ead0-4848-b34e-e9c29a2c5389",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.urls": {
-      "name": "urls",
+    "public.links": {
+      "name": "links",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "url_shortened": {
+          "name": "url_shortened",
           "type": "text",
           "primaryKey": true,
           "notNull": true
         },
-        "original_url": {
-          "name": "original_url",
+        "url_original": {
+          "name": "url_original",
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "short_url": {
-          "name": "short_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "visit_count": {
-          "name": "visit_count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "last_visited": {
-          "name": "last_visited",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "urls_short_url_unique": {
-          "name": "urls_short_url_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "short_url"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

@@ -1,10 +1,6 @@
 node_modules
-dist
-Dockerfile
-.dockerignore
-*.ts
-*.tsx
-*.test.*
-.vscode
-coverage
 .env
+.env.example
+.dockerignore
+Dockerfile
+dist

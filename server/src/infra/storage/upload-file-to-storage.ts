@@ -1,34 +1,32 @@
-import { env } from "@/env";
-import { Upload } from "@aws-sdk/lib-storage";
-import { randomUUID } from "node:crypto";
-import { basename, extname } from "node:path";
-import { Readable } from "node:stream";
-import { z } from "zod";
-import { r2 } from "./client";
+import { randomUUID } from 'node:crypto'
+import { basename, extname } from 'node:path'
+import { Readable } from 'node:stream'
+import { env } from '@/env'
+import { Upload } from '@aws-sdk/lib-storage'
+import { z } from 'zod'
+import { r2 } from './client'
 
-const uploadFileToStorageInput = z.object({
-  folder: z.enum(["urls", "downloads"]),
+const uploadFileToStorageSchema = z.object({
   fileName: z.string(),
   contentType: z.string(),
   contentStream: z.instanceof(Readable),
-});
+})
 
-type UploadFileToStorageInput = z.input<typeof uploadFileToStorageInput>;
+type UploadFileToStorageProps = z.infer<typeof uploadFileToStorageSchema>
 
-export const uploadFileToStorage = async (input: UploadFileToStorageInput) => {
-  const { folder, fileName, contentType, contentStream } =
-    uploadFileToStorageInput.parse(input);
+export async function uploadFileToStorage(props: UploadFileToStorageProps) {
+  const { fileName, contentType, contentStream } =
+    uploadFileToStorageSchema.parse(props)
 
-  const fileExtension = extname(fileName);
-  const fileNameWithoutExtension = basename(fileName, fileExtension);
-
+  const fileExtension = extname(fileName)
+  const fileNameWithoutExtension = basename(fileName).replace(fileExtension, '')
   const sanitizedFileName = fileNameWithoutExtension.replace(
     /[^a-zA-Z0-9]/g,
-    ""
-  );
-  const sanitizedFileNameWithExtension =
-    sanitizedFileName.concat(fileExtension);
-  const uniqueFileName = `${folder}/${randomUUID()}-${sanitizedFileNameWithExtension}`;
+    ''
+  )
+  const sanitizedFileNameWithExtension = `${sanitizedFileName}${fileExtension}`
+
+  const uniqueFileName = `downloads/${randomUUID()}-${sanitizedFileNameWithExtension}`
 
   const upload = new Upload({
     client: r2,
@@ -38,12 +36,12 @@ export const uploadFileToStorage = async (input: UploadFileToStorageInput) => {
       Body: contentStream,
       ContentType: contentType,
     },
-  });
+  })
 
-  await upload.done();
+  await upload.done()
 
   return {
     key: uniqueFileName,
     url: new URL(uniqueFileName, env.CLOUDFLARE_PUBLIC_URL).toString(),
-  };
-};
+  }
+}
