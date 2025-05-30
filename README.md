@@ -1,15 +1,11 @@
 # 🏆 Brev.ly – Full Stack URL Shortener Challenge
 
-**Brev.ly** is a full stack application challenge focused on developing a modern URL shortener service.  
-The goal is to build an application that allows users to create, list, and delete shortened links, track link access counts, export link data in CSV format, and properly redirect shortened URLs to their original destinations.
-
-This project is divided into three main areas of development: **Backend**, **Frontend**, and **DevOps**.
-
----
+**Brev.ly** is a full-stack application challenge focused on developing a modern URL shortening service.
+The goal is to develop an application that allows users to create, list, and delete shortened links, track link visit counts, export link data in CSV format, and properly redirect shortened URLs to their original destinations.
 
 ## 🛠️ Backend – Description & Requirements
 
-You will build a RESTful API to manage shortened URLs using **PostgreSQL** as the database.
+You will build a REST API to manage shortened URLs using **PostgreSQL** as the database.
 
 ### 🔗 Required Features & Rules
 
@@ -30,8 +26,6 @@ You will build a RESTful API to manage shortened URLs using **PostgreSQL** as th
 
 You must provide a `Dockerfile` for the backend, following best practices, which can build and serve the application image.
 
----
-
 ## 💻 Frontend – Description & Requirements
 
 You will develop a SPA (Single Page Application) using **React** and **Vite** that interacts with the backend.
@@ -41,11 +35,11 @@ You will develop a SPA (Single Page Application) using **React** and **Vite** th
 - [x] Users must be able to **create a shortened link**
   - [x] Invalid formats must be rejected
   - [x] Duplicated short codes must be disallowed
-- [x] Users must be able to **delete** links
 - [x] Users must be able to **redirect** to the original URL from a short URL
 - [x] Users must be able to **list all shortened links**
 - [x] Users must be able to **track access counts**
 - [x] Users must be able to **download a CSV report** of all shortened links
+- [x] Users must be able to **delete** links
 
 ### 🧠 UX & Development Rules
 
@@ -54,17 +48,9 @@ You will develop a SPA (Single Page Application) using **React** and **Vite** th
 - [x] UX considerations are expected: empty states, loading indicators, action blocking, etc.
 - [x] The application **must be responsive**, providing a good experience on both desktop and mobile devices
 
----
-
 ## 📄 Required Pages
 
 - [x] `/` → Home page with form to shorten links + list of shortened links
 - [x] `/:short-url` → Redirection page that fetches the original link and redirects
 - [x] `*` → Not found page (shown if URL doesn't exist or is invalid)
 
----
-
-## 🎨 Figma Design
-
-You can view the official design layout here:  
-[🔗 Figma File – URL Shortener](https://www.figma.com/community/file/1477335071553579816/encurtador-de-links)
