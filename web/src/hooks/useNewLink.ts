@@ -1,6 +1,6 @@
 import { createLink } from '@/api/createLink'
 import { useLinkStore } from '@/stores/link'
-import { type NewLinkProps, newLinkSchema } from '@/validations/newLink'
+import { type NewLinkProps, linkSchema } from '@/validations/newLink'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
@@ -15,7 +15,7 @@ export function useNewLink() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<NewLinkProps>({
-    resolver: zodResolver(newLinkSchema),
+    resolver: zodResolver(linkSchema),
     defaultValues: {
       urlOriginal: '',
       urlShortened: '',

@@ -1,16 +1,9 @@
-import { PassThrough, Readable, Transform, Writable } from 'node:stream'
-import { pipeline } from 'node:stream/promises'
+import { Readable, Transform } from 'node:stream'
 import type { LinkProps } from '@/app/functions/get-links'
 import { getLinksFn } from '@/functions/get-links'
 import { redis } from '@/redis'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-
-type LinkResponseProps = {
-  urlShortened: string
-  urlOriginal: string
-  numberOfAccess: number
-}
 
 export const getLinksRoute: FastifyPluginAsyncZod = async server => {
   server.get(
@@ -26,44 +19,33 @@ export const getLinksRoute: FastifyPluginAsyncZod = async server => {
     async (request, reply) => {
       const cursor = getLinksFn()
 
-      reply.raw.writeHead(200, {
-        'content-type': 'text/plain',
-        'access-control-allow-origin': '*',
-      })
-      await pipeline(
-        cursor,
-        new Transform({
-          objectMode: true,
-          async transform(chunks: LinkProps[], encoding, callback) {
-            const links = []
-            for await (const chunk of chunks) {
-              const numberOfAccess = Number.parseInt(
-                (await redis.get(chunk.url_shortened)) ?? '0'
-              )
-              links.push({
-                urlShortened: chunk.url_shortened,
-                urlOriginal: chunk.url_original,
-                numberOfAccess,
-                createdAt: chunk.created_at,
-              })
-            }
-            this.push(links)
-            callback()
-          },
-        }),
-        new Writable({
-          objectMode: true,
-          write(chunks, encoding, callback) {
-            Promise.resolve(
-              setTimeout(() => {
-                reply.raw.write(`${JSON.stringify(chunks)}\n`)
-                callback()
-              }, 300)
+      const transformStream = new Transform({
+        objectMode: true,
+        async transform(chunk: LinkProps, encoding, callback) {
+          try {
+            const numberOfAccess = Number.parseInt(
+              (await redis.get(chunk.url_shortened)) ?? '0'
             )
-          },
-        })
-      )
-      reply.raw.end()
+            const link = {
+              urlShortened: chunk.url_shortened,
+              urlOriginal: chunk.url_original,
+              numberOfAccess,
+              createdAt: chunk.created_at,
+            }
+            // Envia como JSON stringificado, seguido de newline
+            this.push(`${JSON.stringify(link)}\n`)
+            callback()
+          } catch (err) {
+            callback(err as Error)
+          }
+        },
+      })
+
+      reply.header('content-type', 'text/plain')
+      reply.header('access-control-allow-origin', '*')
+
+      // Retorna a stream diretamente
+      return reply.send(cursor.pipe(transformStream))
     }
   )
 }
