@@ -32,7 +32,6 @@ export const getLinksRoute: FastifyPluginAsyncZod = async server => {
               numberOfAccess,
               createdAt: chunk.created_at,
             }
-            // Envia como JSON stringificado, seguido de newline
             this.push(`${JSON.stringify(link)}\n`)
             callback()
           } catch (err) {
@@ -43,8 +42,7 @@ export const getLinksRoute: FastifyPluginAsyncZod = async server => {
 
       reply.header('content-type', 'text/plain')
       reply.header('access-control-allow-origin', '*')
-
-      // Retorna a stream diretamente
+      
       return reply.send(cursor.pipe(transformStream))
     }
   )
